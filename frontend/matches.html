@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Matches - Resume-JD Matcher</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Resume-JD Matcher</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="upload.html">Upload Resume</a></li>
+                    <li><a href="matches.html" class="active">Job Matches</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="matches-section">
+                <h2>Your Job Matches</h2>
+                
+                <div class="resume-selector">
+                    <select id="resume-select">
+                        <option value="">Select a resume</option>
+                    </select>
+                    <button id="find-matches" class="btn primary">Find Matches</button>
+                </div>
+                
+                <div id="loading" class="status-container hidden">
+                    <div class="spinner"></div>
+                    <p>Finding matches...</p>
+                </div>
+                
+                <div id="no-resume" class="message-container hidden">
+                    <p>Please select a resume to find matches.</p>
+                </div>
+                
+                <div id="no-matches" class="message-container hidden">
+                    <p>No matches found for this resume.</p>
+                </div>
+                
+                <div id="matches-container" class="matches-container hidden">
+                    <h3>Found <span id="matches-count">0</span> matches</h3>
+                    <div id="matches-list" class="matches-list"></div>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2023 Resume-JD Matcher. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script src="js/api.js" type="module"></script>
+    <script src="js/matches.js" type="module"></script>
+</body>
+</html> 

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Resume - Resume-JD Matcher</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Resume-JD Matcher</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="upload.html" class="active">Upload Resume</a></li>
+                    <li><a href="matches.html">Job Matches</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <section class="upload-section">
+                <h2>Upload Your Resume</h2>
+                <p>Upload your resume in PDF or DOCX format to find matching jobs.</p>
+                
+                <div class="upload-container">
+                    <form id="upload-form">
+                        <div class="file-input-container">
+                            <input type="file" id="resume-file" accept=".pdf,.docx" required>
+                            <label for="resume-file" class="file-label">Choose File</label>
+                            <span id="file-name">No file chosen</span>
+                        </div>
+                        <button type="submit" class="btn primary">Upload & Find Matches</button>
+                    </form>
+                </div>
+                
+                <div id="upload-status" class="status-container hidden">
+                    <div class="spinner"></div>
+                    <p>Processing your resume...</p>
+                </div>
+                
+                <div id="upload-result" class="result-container hidden">
+                    <h3>Upload Successful!</h3>
+                    <p>Your resume has been processed. <a href="matches.html">View your job matches</a>.</p>
+                </div>
+                
+                <div id="upload-error" class="error-container hidden">
+                    <h3>Error</h3>
+                    <p id="error-message">An error occurred while processing your resume.</p>
+                </div>
+            </section>
+        </main>
+        
+        <footer>
+            <p>&copy; 2023 Resume-JD Matcher. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script src="js/api.js" type="module"></script>
+    <script src="js/upload.js" type="module"></script>
+</body>
+</html> 

@@ -1,0 +1,90 @@
+stages:
+  # Data Collection Stage
+  collect_data:
+    cmd: |
+      python backend/preprocess_jds.py
+      python backend/data_downloader.py
+    deps:
+      - backend/preprocess_jds.py
+      - backend/data_downloader.py
+      - backend/preprocessing/jds/scraper.py
+    outs:
+      - data/raw/jobs
+      - data/raw/resumes
+    metrics:
+      - data/metrics/data_collection.json:
+          cache: false
+
+  # Data Preprocessing Stage
+  preprocess:
+    cmd: |
+      python backend/data_processor.py
+    deps:
+      - backend/data_processor.py
+      - data/raw/jobs
+      - data/raw/resumes
+    outs:
+      - data/processed/jobs
+      - data/processed/resumes
+      - data/embeddings
+      - data/metadata
+    metrics:
+      - data/metrics/preprocessing.json:
+          cache: false
+
+  # Model Training Stage
+  train:
+    cmd: |
+      python backend/model_trainer.py
+    deps:
+      - backend/model_trainer.py
+      - data/processed/jobs
+      - data/processed/resumes
+      - data/embeddings
+    outs:
+      - models
+      - mlflow_logs
+    metrics:
+      - data/metrics/training.json:
+          cache: false
+
+  # Model Evaluation Stage
+  evaluate:
+    cmd: |
+      python backend/evaluate.py
+    deps:
+      - backend/evaluate.py
+      - models
+      - data/processed/jobs
+      - data/processed/resumes
+    metrics:
+      - data/metrics/evaluation.json:
+          cache: false
+
+  # API Deployment Stage
+  deploy:
+    cmd: |
+      cd backend && python run.py
+    deps:
+      - backend/run.py
+      - models
+    outs:
+      - logs/api.log
+    metrics:
+      - data/metrics/deployment.json:
+          cache: false
+
+  # Frontend Deployment Stage
+  deploy_frontend:
+    cmd: |
+      cd frontend && npm start
+    deps:
+      - frontend/server.js
+      - frontend/*.html
+      - frontend/css
+      - frontend/js
+    outs:
+      - logs/frontend.log
+    metrics:
+      - data/metrics/frontend_deployment.json:
+          cache: false 

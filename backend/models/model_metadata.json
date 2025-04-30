@@ -1,0 +1,11 @@
+{
+  "embedding_dim": 128,
+  "input_shape": [
+    3
+  ],
+  "batch_size": 32,
+  "epochs": 10,
+  "num_samples": 1000,
+  "model_path": "models/siamese_model",
+  "training_date": "2025-04-29T12:05:46.356061"
+}
