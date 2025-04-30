@@ -1,7 +1,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 import PyPDF2
 import docx
 from data_processor import DataProcessor
@@ -89,7 +89,23 @@ os.makedirs(os.path.join(data_dir, "processed"), exist_ok=True)
 os.makedirs(os.path.join(data_dir, "metadata"), exist_ok=True)
 os.makedirs(os.path.join(data_dir, "embeddings"), exist_ok=True)
 os.makedirs(os.path.join(data_dir, "resumes"), exist_ok=True)
-os.makedirs(os.path.join(backend_dir, "logs"), exist_ok=True)
+os.makedirs(os.path.join(data_dir, "logs"), exist_ok=True)
+
+# Ensure directories have proper permissions
+for dir_path in [
+    os.path.join(data_dir, "raw"),
+    os.path.join(data_dir, "raw", "resumes"),
+    os.path.join(data_dir, "raw", "jobs"),
+    os.path.join(data_dir, "processed"),
+    os.path.join(data_dir, "metadata"),
+    os.path.join(data_dir, "embeddings"),
+    os.path.join(data_dir, "resumes"),
+    os.path.join(data_dir, "logs")
+]:
+    try:
+        os.chmod(dir_path, 0o777)  # Full permissions for development
+    except Exception as e:
+        logger.warning(f"Could not set permissions for {dir_path}: {str(e)}")
 
 # Initialize processors
 data_processor = DataProcessor(data_dir=data_dir)
@@ -365,10 +381,13 @@ def retrain_model():
     except Exception as e:
         print(f"Error retraining model: {str(e)}")
 
-@app.route('/metrics')
-def metrics():
+@app.get("/metrics")
+async def metrics():
     """Expose Prometheus metrics."""
-    return generate_latest(), 200, {'Content-Type': CONTENT_TYPE_LATEST}
+    return Response(
+        content=generate_latest(),
+        media_type=CONTENT_TYPE_LATEST
+    )
 
 @app.route('/resumes/upload', methods=['POST'])
 def upload_resume():

@@ -10,55 +10,41 @@ import random
 class DataProcessor:
     def __init__(self, data_dir="data"):
         """Initialize the data processor."""
-        # Use the absolute path to the data directory
-        base_dir = os.path.dirname(os.path.dirname(__file__))
-        self.data_dir = os.path.join(base_dir, data_dir)
-        self.raw_resumes_dir = os.path.join(self.data_dir, "raw", "resumes")
-        self.pdf_resumes_dir = os.path.join(self.data_dir, "resumes", "data", "data")
-        self.raw_jobs_dir = os.path.join(self.data_dir, "raw", "jobs")
-        self.processed_dir = os.path.join(self.data_dir, "processed")
-        self.metadata_dir = os.path.join(self.data_dir, "metadata")
-        self.embeddings_dir = os.path.join(self.data_dir, "embeddings")
+        self.data_dir = data_dir
+        self.raw_resumes_dir = os.path.join(data_dir, "raw", "resumes")
+        self.pdf_resumes_dir = os.path.join(data_dir, "raw", "resumes")
+        self.processed_dir = os.path.join(data_dir, "processed")
+        self.metadata_dir = os.path.join(data_dir, "metadata")
+        self.embeddings_dir = os.path.join(data_dir, "embeddings")
+        self.logs_dir = os.path.join(data_dir, "logs")
         
         # Create necessary directories
-        os.makedirs(self.data_dir, exist_ok=True)
-        os.makedirs(self.raw_resumes_dir, exist_ok=True)
-        os.makedirs(self.pdf_resumes_dir, exist_ok=True)
-        os.makedirs(self.raw_jobs_dir, exist_ok=True)
-        os.makedirs(self.processed_dir, exist_ok=True)
-        os.makedirs(self.metadata_dir, exist_ok=True)
-        os.makedirs(self.embeddings_dir, exist_ok=True)
+        self._create_directories()
         
-        self.vectorizer = TfidfVectorizer(
-            max_features=5000,
-            stop_words='english',
-            ngram_range=(1, 2)
-        )
-        
-        # Initialize or load vectorizer
+        # Initialize vectorizer
         self._initialize_vectorizer()
         
-        # Add sample jobs if no jobs exist
+        # Add sample jobs if none exist
         if not self._has_jobs():
             self._add_sample_jobs()
     
     def _create_directories(self):
-        """Create necessary directories for data storage."""
-        base_dir = os.path.dirname(os.path.dirname(__file__))
-        data_dir = os.path.join(base_dir, "data")
-        
+        """Create necessary directories if they don't exist."""
         directories = [
-            os.path.join(data_dir, "raw"),
-            os.path.join(data_dir, "raw", "resumes"),
-            os.path.join(data_dir, "raw", "jobs"),
-            os.path.join(data_dir, "processed"),
-            os.path.join(data_dir, "embeddings"),
-            os.path.join(data_dir, "metadata")
+            self.raw_resumes_dir,
+            self.pdf_resumes_dir,
+            self.processed_dir,
+            self.metadata_dir,
+            self.embeddings_dir,
+            self.logs_dir
         ]
         
         for directory in directories:
             os.makedirs(directory, exist_ok=True)
-            print(f"Created directory: {directory}")
+            try:
+                os.chmod(directory, 0o777)  # Full permissions for development
+            except Exception as e:
+                print(f"Warning: Could not set permissions for {directory}: {str(e)}")
         
         # Set the data directory path
         self.data_dir = data_dir

@@ -6,7 +6,9 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - type: bind
+        source: ./prometheus.yml
+        target: /etc/prometheus/prometheus.yml
     command:
       - '--config.file=/etc/prometheus/prometheus.yml'
       - '--storage.tsdb.path=/prometheus'
@@ -18,7 +20,9 @@ services:
     ports:
       - "6000:3000"
     volumes:
-      - ./grafana-dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
+      - type: bind
+        source: ./grafana-dashboard.json
+        target: /etc/grafana/provisioning/dashboards/dashboard.json
     environment:
       - GF_SECURITY_ADMIN_PASSWORD=admin
       - GF_USERS_ALLOW_SIGN_UP=false
