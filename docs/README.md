@@ -114,12 +114,14 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
 3. **Processing Layer**
    - Text extraction
    - Feature engineering
-   - Data storage
+   - File directories based data storage
+   - DVC for tracking data changes
 
 4. **ML Layer**
    - Model training
    - Inference
    - Continuous learning
+   - MLflow for tracking
 
 5. **Monitoring**
    - Prometheus metrics
