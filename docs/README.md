@@ -329,5 +329,5 @@ Serve frontend pages.
 
 1. Feedback driven **model retraining**
 2. Scraping **scheduled** through cron
-3. **Logs** are saved to `data/logs/api.log` and printed to stdout.
+3. **Logging** implemented.
 5. **Error Handling** and detailed messages provided via `HTTPException`.
