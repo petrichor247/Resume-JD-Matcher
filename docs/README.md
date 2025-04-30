@@ -1,18 +1,9 @@
 # Resume-Job Matching System Documentation
 
-## Table of Contents
-1. [User Manual](#user-manual)
-2. [Design Document](#design-document)
-3. [Architecture Overview](#architecture-overview)
-4. [High-Level Design](#high-level-design)
-5. [Low-Level Design](#low-level-design)
-6. [API Documentation](#api-documentation)
-7. [Monitoring and Metrics](#monitoring-and-metrics)
-
 ## User Manual
 
 ### Overview
-The Resume-Job Matching System is an intelligent platform that helps job seekers find relevant job opportunities by matching their resumes with available job descriptions. The system uses advanced machine learning to analyze both resumes and job descriptions to find the best matches.
+The Resume-Job Matching System is an intelligent platform that helps job seekers find relevant job opportunities by matching their resumes with available job descriptions. The system uses the Siamese Neural Network model to analyze both resumes and job descriptions to find the best matches.
 
 ### Getting Started
 
@@ -57,6 +48,10 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
     |              |                  |                  |
 [User Interface] [FastAPI] [Data Processor] [Siamese Network]
 ```
+
+### File structure
+
+project_root/ │ ├── backend/ │ ├── main.py # FastAPI application │ ├── data_processor.py # Resume/Job data processing │ ├── model_trainer.py # Siamese model training & matching │ ├── data_downloader.py # Resume crawling/downloading │ ├── preprocess_jds.py # Preprocessing of job descriptions │ └── logs/ # API and processing logs │ ├── data/ │ ├── raw/ │ │ ├── resumes/ # Uploaded resume files │ │ └── jobs/ # Job description JSONs │ ├── processed/ # Cleaned/preprocessed data │ ├── metadata/ # Resume/job metadata │ ├── embeddings/ # Vector representations │ └── logs/ # Log files │ ├── models/ │ └── siamese_model.keras # Trained similarity model │ ├── frontend/ │ ├── index.html # Home page │ ├── upload.html # Resume upload interface │ └── matches.html # Job matches display │ └── preprocessing/ ├── resumes/ │ └── preprocess.py # Resume cleaning and extraction └── jds/ └── scraper.py # LinkedIn job scraper
 
 ### Components
 
@@ -161,62 +156,65 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
    - Easy to update
 
 3. **Siamese Network**
-   - Effective for matching
-   - Can learn from new data
-   - Handles varying lengths
-
-4. **Docker Containerization**
-   - Easy deployment
-   - Consistent environment
-   - Scalable architecture
-
-### Rationale
-
-1. **Why FastAPI?**
-   - Modern async framework
-   - Excellent performance
-   - Built-in OpenAPI support
-   - Easy to maintain
-
-2. **Why TF-IDF?**
-   - Proven technology
-   - Fast processing
-   - Good for text matching
-   - Easy to understand
-
-3. **Why Siamese Network?**
-   - Effective for similarity
-   - Can learn from pairs
-   - Good for matching tasks
+   - Effective for text similarity
+   - Can learn from pairs - Good for matching tasks
    - Continuous improvement
 
-## Low-Level Design
+## Module Responsibilities
 
+### `data_processor.py`
+- Saves and retrieves resume/job data.
+- Converts resume text to a storable format.
+- Checks if model retraining is needed based on new resumes.
+
+### `model_trainer.py`
+- Loads and trains a Siamese similarity model.
+- Computes embeddings for resumes and jobs.
+- Finds job matches based on similarity scores.
+
+### `data_downloader.py`
+- Processes all existing resume files in batch.
+- Useful for initial resume ingestion.
+
+### `preprocess_jds.py`
+- Extracts and normalizes job descriptions.
+- Prepares job data for similarity scoring.
+
+### `preprocessing/resumes/preprocess.py`
+- Extracts and cleans resume content.
+- Handles PDFs and DOCX formats.
+
+### `preprocessing/jds/scraper.py`
+- Scrapes job descriptions (e.g., from LinkedIn).
+
+### `similarity/model.py`
+- Wraps similarity logic using embeddings.
+
+  
+## Low-Level Design
+Backend running on PORT 8000
+Frontend running on PORT 3000
 ### API Endpoints
 
-1. **Resume Management**
-   ```python
-   POST /upload-resume
-   - Input: PDF/DOCX file
-   - Output: {resume_id, matches}
-   - Status: 200 OK, 400 Bad Request, 500 Server Error
-   ```
 
-2. **Job Management**
-   ```python
-   POST /scrape-linkedin-jobs
-   - Input: {keywords, location, num_pages}
-   - Output: {message, jobs}
-   - Status: 200 OK, 500 Server Error
-   ```
 
-3. **Matching**
-   ```python
-   GET /matches/{resume_id}
-   - Input: resume_id
-   - Output: {matches}
-   - Status: 200 OK, 404 Not Found
-   ```
+#### `GET /`
+Serves the homepage.
+
+#### `POST /upload-resume`
+Accepts `.pdf` or `.docx` resumes. Extracts text, stores content, triggers matching, and schedules retraining.
+
+#### `POST /add-job`
+Takes a JSON job description and stores it.
+
+#### `GET /job/{job_id}`
+Returns metadata and description of a job.
+
+#### `GET /resume/{resume_id}`
+Returns metadata and matched jobs for a resume.
+
+#### `GET /upload`, `GET /matches`
+Serve frontend pages.
 
 ### Data Structures
 
@@ -301,14 +299,10 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
    - Processing time
    - Success rate
 
-### Alerting
+## Miscellaneous 
 
-1. **Performance Alerts**
-   - High latency
-   - Error rate threshold
-   - Processing time threshold
 
-2. **System Alerts**
-   - Service availability
-   - Resource usage
-   - Error patterns 
+1. Feedback driven **model retraining**
+2. Scraping **scheduled** through cron
+3. **Logs** are saved to `data/logs/api.log` and printed to stdout.
+5. **Error Handling** and detailed messages provided via `HTTPException`.
