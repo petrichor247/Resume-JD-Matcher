@@ -61,7 +61,7 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
 ### Components
 
 1. **Frontend**
-   - React-based web interface
+   - HTML/CSS/JS
    - Responsive design
    - Real-time updates
 
@@ -71,7 +71,7 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
    - Async processing
 
 3. **Data Processing**
-   - Resume parsing
+   - Resume parsing 
    - Job description processing
    - Text preprocessing
 
