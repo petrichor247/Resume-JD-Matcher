@@ -23,7 +23,7 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
 
 #### Accessing the Application
 1. Open your web browser
-2. Navigate to `http://localhost:8000`
+2. Navigate to `http://localhost:3000`
 3. You'll see the home page with options to:
    - Upload your resume
    - View job matches
@@ -46,32 +46,6 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
    - Match score
    - Job description
    - Required skills
-
-#### Scraping New Jobs
-1. Navigate to the "Jobs" section
-2. Click "Scrape New Jobs"
-3. Enter keywords for job search
-4. Select location (default: India)
-5. Choose number of pages to scrape
-6. Click "Start Scraping"
-
-### Troubleshooting
-
-#### Common Issues
-1. **Upload Failed**
-   - Ensure your file is in PDF or DOCX format
-   - Check file size (max 10MB)
-   - Verify internet connection
-
-2. **No Matches Found**
-   - Try uploading a more detailed resume
-   - Check if jobs are available in the system
-   - Try scraping new jobs
-
-3. **Slow Performance**
-   - Clear browser cache
-   - Check internet connection
-   - Try during off-peak hours
 
 ## Design Document
 
