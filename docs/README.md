@@ -50,9 +50,6 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
 
 ```
 
-### File structure
-
-project_root/ │ ├── backend/ # Backend logic (FastAPI) │ ├── main.py # FastAPI application entry point │ ├── data_processor.py # Resume/Job data processing │ ├── model_trainer.py # Siamese model training & matching │ ├── data_downloader.py # Resume crawling/downloading │ ├── preprocess_jds.py # Preprocessing of job descriptions │ └── logs/ # API and processing logs │ ├── data/ # Data storage │ ├── raw/ # Raw inputs │ │ ├── resumes/ # Uploaded resume files │ │ └── jobs/ # Job description JSONs │ ├── processed/ # Cleaned/preprocessed data │ ├── metadata/ # Resume/job metadata │ ├── embeddings/ # Vector representations │ └── logs/ # Log files │ ├── models/ # Model storage │ └── siamese_model.keras # Trained similarity model │ ├── frontend/ # Static frontend pages │ ├── index.html # Home page │ ├── upload.html # Resume upload interface │ └── matches.html # Job matches display │ └── preprocessing/ # Preprocessing utilities ├── resumes/ │ └── preprocess.py # Resume cleaning and extraction └── jds/ └── scraper.py # LinkedIn job scraper
 ### Components
 
 1. **Frontend**
