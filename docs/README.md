@@ -89,8 +89,8 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
    Query -> Vectorize -> Compare -> Rank -> Return
    ```
 ### Overall pipeline
-
-       +--------------+
+ ```
+      +--------------+
        | collect_data |
        +--------------+
                *
@@ -103,7 +103,7 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
         **            *
        *               **
 +-------+                *
-| train |*               *
+| train | *              *
 +-------+ ****           *
      *        ***        *
      *           ****    *
@@ -114,6 +114,8 @@ The Resume-Job Matching System is an intelligent platform that helps job seekers
 +-----------------+
 | deploy_frontend |
 +-----------------+
+```
+
 
 ## Architecture Overview
 
